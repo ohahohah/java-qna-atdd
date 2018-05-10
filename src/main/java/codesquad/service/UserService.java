@@ -43,7 +43,6 @@ public class UserService {
 
   public User login(String userId, String password) throws UnAuthenticationException {
 
-
     // TODO 로그인 기능 구현
     // UserId 정보있는지, 찾은 User의 password가 입력패스워드가 같은지 찾고싶다
 //    User loginUser = new User();

@@ -35,8 +35,6 @@ public class UserServiceTest {
 
     User loginUser = userService.login(user.getUserId(), user.getPassword());
     assertThat(loginUser, is(user));
-
-
   }
 
   @Test(expected = UnAuthenticationException.class)
