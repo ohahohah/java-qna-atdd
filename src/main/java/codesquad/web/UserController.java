@@ -1,5 +1,6 @@
 package codesquad.web;
 
+import codesquad.UnAuthenticationException;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -26,6 +27,16 @@ public class UserController {
 
     @Resource(name = "userService")
     private UserService userService;
+
+  @PostMapping("/login")
+  public String login(String userId, String password) {
+    try {
+      userService.login(userId, password);
+    } catch (UnAuthenticationException e) {
+      return "/user/login_failed";
+    }
+    return "redirect:/users";
+  }
 
     @GetMapping("/form")
     public String form() {

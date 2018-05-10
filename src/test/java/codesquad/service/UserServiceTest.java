@@ -19,33 +19,38 @@ import codesquad.service.UserService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
-    @Mock
-    private UserRepository userRepository;
 
-    @InjectMocks
-    private UserService userService;
+  @Mock
+  private UserRepository userRepository;
 
-    @Test
-    public void login_success() throws Exception {
-        User user = new User("sanjigi", "password", "name", "javajigi@slipp.net");
-        when(userRepository.findByUserId(user.getUserId())).thenReturn(Optional.of(user));
+  @InjectMocks
+  private UserService userService;
 
-        User loginUser = userService.login(user.getUserId(), user.getPassword());
-        assertThat(loginUser, is(user));
-    }
+  @Test
+  public void login_success() throws Exception {
+    User user = new User("sanjigi", "password", "name", "javajigi@slipp.net");
+    when(userRepository.findByUserId(user.getUserId())).thenReturn(Optional.of(user));
 
-    @Test(expected = UnAuthenticationException.class)
-    public void login_failed_when_user_not_found() throws Exception {
-        when(userRepository.findByUserId("sanjigi")).thenReturn(Optional.empty());
+    //TODO new User 에 id, pwd 만 가지고 기존 정보 조회할 수 있나?
 
-        userService.login("sanjigi", "password");
-    }
+    User loginUser = userService.login(user.getUserId(), user.getPassword());
+    assertThat(loginUser, is(user));
 
-    @Test(expected = UnAuthenticationException.class)
-    public void login_failed_when_mismatch_password() throws Exception {
-        User user = new User("sanjigi", "password", "name", "javajigi@slipp.net");
-        when(userRepository.findByUserId(user.getUserId())).thenReturn(Optional.of(user));
 
-        userService.login(user.getUserId(), user.getPassword() + "2");
-    }
+  }
+
+  @Test(expected = UnAuthenticationException.class)
+  public void login_failed_when_user_not_found() throws Exception {
+    when(userRepository.findByUserId("sanjigi")).thenReturn(Optional.empty());
+
+    userService.login("sanjigi", "password");
+  }
+
+  @Test(expected = UnAuthenticationException.class)
+  public void login_failed_when_mismatch_password() throws Exception {
+    User user = new User("sanjigi", "password", "name", "javajigi@slipp.net");
+    when(userRepository.findByUserId(user.getUserId())).thenReturn(Optional.of(user));
+
+    userService.login(user.getUserId(), user.getPassword() + "2");
+  }
 }
