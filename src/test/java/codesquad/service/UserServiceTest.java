@@ -30,9 +30,6 @@ public class UserServiceTest {
   public void login_success() throws Exception {
     User user = new User("sanjigi", "password", "name", "javajigi@slipp.net");
     when(userRepository.findByUserId(user.getUserId())).thenReturn(Optional.of(user));
-
-    //TODO new User 에 id, pwd 만 가지고 기존 정보 조회할 수 있나?
-
     User loginUser = userService.login(user.getUserId(), user.getPassword());
     assertThat(loginUser, is(user));
   }

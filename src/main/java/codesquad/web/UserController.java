@@ -1,10 +1,12 @@
 package codesquad.web;
 
 import codesquad.UnAuthenticationException;
+import codesquad.security.HttpSessionUtils;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -30,13 +32,14 @@ public class UserController {
   private UserService userService;
 
   @PostMapping("/login")
-  public String login(String userId, String password) {
+  public String login(String userId, String password, HttpSession httpSession) {
     try {
-      userService.login(userId, password);
+      httpSession
+          .setAttribute(HttpSessionUtils.USER_SESSION_KEY, userService.login(userId, password));
+      return "redirect:/users";
     } catch (UnAuthenticationException e) {
-      return "/user/login_failed";
+      return "redirect:/user/login_failed";
     }
-    return "redirect:/users";
   }
 
   @GetMapping("/form")

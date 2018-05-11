@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.annotation.Resource;
 
+import javax.security.sasl.AuthenticationException;
 import org.springframework.stereotype.Service;
 
 import codesquad.UnAuthenticationException;
@@ -42,19 +43,7 @@ public class UserService {
   }
 
   public User login(String userId, String password) throws UnAuthenticationException {
-
-    // TODO 로그인 기능 구현
-    // UserId 정보있는지, 찾은 User의 password가 입력패스워드가 같은지 찾고싶다
-//    User loginUser = new User();
-//
-//    findById()
-
-    //    return Optional.ofNullable(order)
-//        .map(Order::getMember)
-//        .map(Member::getAddress)
-//        .map(Address::getCity)
-//        .orElse("Seoul");
-
-    return null;
+    return userRepository.findByUserId(userId).filter(user -> user.getPassword().equals(password))
+        .orElseThrow(UnAuthenticationException::new);
   }
 }
